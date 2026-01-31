@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class MaskControl : MonoBehaviour
 {
     [SerializeField] RectTransform[] masks;
     [SerializeField] RectTransform icon;
-    //readonly int[] masksStored = new int[3] { (int)GameManager.colors.BLUE, (int)GameManager.colors.RED, (int)GameManager.colors.GREEN };
+    [SerializeField] float moveDuration = 0.3f;
+    
+    private Coroutine moveCoroutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,6 +18,32 @@ public class MaskControl : MonoBehaviour
     void OnColorChange()
     {
         int currentColor = (int)GameManager.Singleton.currentColor;
-        icon.anchoredPosition = masks[currentColor].anchoredPosition;
+        Vector3 targetPosition = masks[currentColor].localPosition;
+        
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        moveCoroutine = StartCoroutine(MoveIcon(targetPosition));
+    }
+
+    IEnumerator MoveIcon(Vector3 targetPosition)
+    {
+        Vector3 startPosition = icon.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < moveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / moveDuration;
+            
+            // Ease in (quadratic)
+            float eased = t * t;
+            
+            icon.localPosition = Vector3.Lerp(startPosition, targetPosition, eased);
+            yield return null;
+        }
+
+        icon.localPosition = targetPosition;
     }
 }
