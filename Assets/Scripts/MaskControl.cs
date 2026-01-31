@@ -4,6 +4,12 @@ public class MaskControl : MonoBehaviour
 {
     [SerializeField] RectTransform[] masks;
     int[] masksIndex = new int[3];
+    readonly int[] masksStored = new int[3] { (int)GameManager.colors.BLUE, (int)GameManager.colors.RED, (int)GameManager.colors.GREEN };
+    readonly int[] colorToMaskIndex = new int[3] {
+        1, //Red
+        2, //Green
+        0  //Blue
+    };
     Vector3 middleVector;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,22 +30,8 @@ public class MaskControl : MonoBehaviour
         {
             return;
         }
-        int i = 0;
-        int[] masksStored = new int[3]{ (int)GameManager.colors.BLUE, (int)GameManager.colors.RED, (int)GameManager.colors.GREEN };
-        while (i < masks.Length)
-        {
-            if (masksStored[i] == currentColor)
-            {
-                break;
-            }
-            i++;
-        }
-        if (i > 2)
-        {
-            Debug.Log("Out of bounds.");
-            return;
-        }
-        masks[Remap(maskMiddleColorIndex)].position = masks[i].position;
+        int i = System.Array.IndexOf(masksStored, currentColor);
+        masks[colorToMaskIndex[maskMiddleColorIndex]].position = masks[i].position;
         masks[i].position = middleVector;
         masksIndex[1] = currentColor;
         if (masksIndex[0] == currentColor)
@@ -50,18 +42,5 @@ public class MaskControl : MonoBehaviour
         {
             masksIndex[2] = maskMiddleColorIndex;
         }
-    }
-    int Remap(int index)
-    {
-        switch (index)
-        {
-            case (int)GameManager.colors.BLUE:
-                return 0;
-            case (int)GameManager.colors.RED:
-                return 1;
-            case (int)GameManager.colors.GREEN:
-                return 2;
-        }
-        return 0;
     }
 }
