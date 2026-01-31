@@ -675,7 +675,7 @@ PrefabInstance:
       objectReference: {fileID: 1837927985}
     - target: {fileID: 4102240056996230573, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 113
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 4307979841128963701, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_Mesh
@@ -687,7 +687,7 @@ PrefabInstance:
       objectReference: {fileID: 747746}
     - target: {fileID: 4863691519913230021, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 113
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 5721720690963478973, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_Mesh
@@ -1169,6 +1169,10 @@ PrefabInstance:
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: WallDragPower
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: MaxSpeedMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_Name
@@ -2507,7 +2511,7 @@ PrefabInstance:
       objectReference: {fileID: 1531851234}
     - target: {fileID: 4102240056996230573, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 113
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 4307979841128963701, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_Mesh
@@ -2519,7 +2523,7 @@ PrefabInstance:
       objectReference: {fileID: 604968415}
     - target: {fileID: 4863691519913230021, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 113
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 5721720690963478973, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_Mesh
