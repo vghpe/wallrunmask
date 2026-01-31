@@ -119,6 +119,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &119436425 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 643556449233871122, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 2078953351}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &119436431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119436425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72111b69cc6d42c19737ed1d0ae43df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepSFX
+  footstepClips:
+  - {fileID: 8300000, guid: a897d853719184b69baab888315ad2da, type: 3}
+  - {fileID: 8300000, guid: 5e5f48525391d4584b7085de56f00a6a, type: 3}
+  - {fileID: 8300000, guid: 4803b66dd50b8479d8225f10be4a31fc, type: 3}
+  - {fileID: 8300000, guid: cc4b790180a204b719529fa344b9d982, type: 3}
+  - {fileID: 8300000, guid: 46aee3fa1db444d7da9339066d951de3, type: 3}
+  - {fileID: 8300000, guid: bfd63a58980fc40ec8bce603900d7e32, type: 3}
+  - {fileID: 8300000, guid: 16366c115d2be4597b96c7c1c3e327e0, type: 3}
+  - {fileID: 8300000, guid: 396988bccf8e24b1da1dd8e9c226a10e, type: 3}
+  stepInterval: 0.5
+  minimumSpeed: 0.1
+  pitchRange: {x: 0.9, y: 1.1}
+  volumeRange: {x: 0.8, y: 1}
+  isGrounded: 1
+  targetCharacter: {fileID: 1053284458}
 --- !u!43 &408725193
 Mesh:
   m_ObjectHideFlags: 0
@@ -6295,6 +6327,11 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1053284458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 2078953351}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1314734392 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4593741419519406352, guid: 07a49f5909c98426689aa4439610f216, type: 3}
@@ -6810,6 +6847,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 362206996289910854, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2826508215071079306, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_ClearFlags
       value: 2
@@ -6825,6 +6866,30 @@ PrefabInstance:
     - target: {fileID: 2826508215071079306, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_BackGroundColor.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244987509230107515, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244987509230107515, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: Gravity
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: MoveSpeed
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: JumpHeight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: RotationSpeed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: GroundLayers.m_Bits
@@ -6877,9 +6942,14 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3579567256781749721, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
     - {fileID: 6876741574420584503, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+    - {fileID: 1590939607154762814, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+    - {fileID: 914422615748714526, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 643556449233871122, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 119436431}
   m_SourcePrefab: {fileID: 100100000, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
 --- !u!43 &2113498273
 Mesh:
