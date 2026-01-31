@@ -9,6 +9,10 @@ public class Killzone : MonoBehaviour
     [Header("Particle System")]
     [Tooltip("Optional particle system to restart on respawn")]
     public ParticleSystem particleSystemToRestart;
+    
+    [Header("Music")]
+    [Tooltip("Restart music tracks on respawn")]
+    public bool restartMusicOnRespawn = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -54,6 +58,12 @@ public class Killzone : MonoBehaviour
             {
                 particleSystemToRestart.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 particleSystemToRestart.Play();
+            }
+            
+            // Restart music if enabled
+            if (restartMusicOnRespawn && MusicManager.Singleton != null)
+            {
+                MusicManager.Singleton.RestartAllTracks();
             }
         }
         else
