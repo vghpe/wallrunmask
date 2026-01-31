@@ -9,6 +9,10 @@ public class PlayerCinematicWallRun : MonoBehaviour
     private FirstPersonController firstPersonController;
     private void Start()
     {
+        if (player == null)
+        {
+            player = GameObject.Find("PlayerCapsule").transform;
+        }
         firstPersonController = player.GetComponent<FirstPersonController>();
     }
     private void OnTriggerEnter(Collider other)
