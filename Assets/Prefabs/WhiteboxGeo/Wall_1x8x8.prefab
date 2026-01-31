@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 8284331937197528573}
   - component: {fileID: 4009405932644757814}
   - component: {fileID: 375881563566021659}
+  - component: {fileID: 1446155206855395091}
   m_Layer: 0
   m_Name: Wall_1x8x8
   m_TagString: Untagged
@@ -317,7 +318,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 44
+  m_VersionIndex: 47
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -437,3 +438,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0.5, y: 0.5, z: 0.5}
+--- !u!114 &1446155206855395091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028343894993304485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09ea7b1853644f46be22afb134f97ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorPlatform
+  color: 0
