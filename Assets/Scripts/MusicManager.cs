@@ -57,6 +57,7 @@ public class MusicManager : MonoBehaviour
         source.loop = true;
         source.playOnAwake = false;
         source.volume = 0f;
+        source.spatialBlend = 0f; // 2D audio (not spatialized)
     }
 
     private void StartAllTracks()
