@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Forcefield_Neutral
-  m_Shader: {fileID: -6465566751694194690, guid: dbde842564185d447ac8138a702d3987, type: 3}
+  m_Name: M_Neutral
+  m_Shader: {fileID: -6465566751694194690, guid: b6790ecaa8bad5246886deb42f5be9d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -97,14 +97,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _Emissivity: 5
+    - _Emissivity: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Gradient_Intensity: 1
-    - _Gradient_Min: 0.1
-    - _Gradient_Power: 2
+    - _Gradient_Min: 0.2
+    - _Gradient_Power: 1.25
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
