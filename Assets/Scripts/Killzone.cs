@@ -5,6 +5,10 @@ public class Killzone : MonoBehaviour
     [Header("Respawn Settings")]
     [Tooltip("The transform where the player will respawn")]
     public Transform respawnPoint;
+    
+    [Header("Particle System")]
+    [Tooltip("Optional particle system to restart on respawn")]
+    public ParticleSystem particleSystemToRestart;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,6 +47,13 @@ public class Killzone : MonoBehaviour
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
+            }
+            
+            // Restart particle system if assigned
+            if (particleSystemToRestart != null)
+            {
+                particleSystemToRestart.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                particleSystemToRestart.Play();
             }
         }
         else
