@@ -1,5 +1,6 @@
 using StarterAssets;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WallRun : MonoBehaviour
@@ -7,10 +8,13 @@ public class WallRun : MonoBehaviour
     [SerializeField] private FirstPersonController firstPersonController;
     private float playerGravity;
     private float playerJump;
+    private float stepOffset;
     private void OnTriggerEnter(Collider other)
     {
         playerGravity = firstPersonController.Gravity;
         playerJump = firstPersonController.JumpHeight;
+        stepOffset = firstPersonController._controller.stepOffset;
+        firstPersonController._controller.stepOffset = 0.0f;
         firstPersonController.JumpHeight = 0.0f;
         firstPersonController.Gravity = 0.0f;
         StartCoroutine(TakeControl());
@@ -21,7 +25,8 @@ public class WallRun : MonoBehaviour
     {
         firstPersonController.Gravity = playerGravity;
         firstPersonController.JumpHeight = playerJump;
-        StopAllCoroutines();
+        firstPersonController._controller.stepOffset = stepOffset;
+        StopAllCoroutines(); //Probably not needed, since TakeControl should already have ended
         Debug.Log("Stopped wall running.");
     }
 
@@ -29,9 +34,9 @@ public class WallRun : MonoBehaviour
     {
         while (!firstPersonController.WallRun)
         {
-            Vector3 toTarget = transform.position - firstPersonController.transform.position;
-            Vector3 pull = toTarget.normalized * firstPersonController.ControlFactorDragAgainstWall * Time.deltaTime;
-            firstPersonController._controller.Move(pull);
+            Vector3 toTarget = transform.position - firstPersonController.transform.position; 
+            Vector3 pull = firstPersonController.WallDragPower * Time.deltaTime * toTarget.normalized; 
+            firstPersonController._controller.Move(pull); 
             yield return null;
         }
     }
