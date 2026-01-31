@@ -16,6 +16,8 @@ namespace StarterAssets
         public float MoveSpeed = 4.0f;
         //[Tooltip("Sprint speed of the character in m/s")]
         //public float SprintSpeed = 6.0f;
+        [Tooltip("Max speed multiplier on platforms")]
+        public float MaxSpeedMultiplier;
         [Tooltip("Rotation speed of the character")]
         public float RotationSpeed = 1.0f;
         [Tooltip("Acceleration and deceleration")]
@@ -94,7 +96,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
-        private const float _threshold = 0.01f;
+        private const float _threshold = 0.0001f;
 
         private bool IsCurrentDeviceMouse
         {
@@ -140,6 +142,7 @@ namespace StarterAssets
                 GroundedCheck();
                 Move();
             }
+            Ability();
         }
 
         private void LateUpdate()
@@ -188,9 +191,15 @@ namespace StarterAssets
 
         private void Move()
         {
+            float maxSpeedMod = 1.0f;
+            if (Grounded || WallRun) 
+            {
+                maxSpeedMod = MaxSpeedMultiplier;
+            }
+            
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-            float targetSpeed = MoveSpeed;
+            float targetSpeed = MoveSpeed * maxSpeedMod;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -233,7 +242,6 @@ namespace StarterAssets
             //}
 
             //inputDirection = transform.forward + transform.right * _input.move.x;
-
 
             // move the player
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -294,6 +302,33 @@ namespace StarterAssets
             if (_verticalVelocity < _terminalVelocity)
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
+            }
+        }
+
+        public void Ability()
+        {
+            if (_input.ability)
+            {
+                if (GameManager.Singleton.currentColor == GameManager.colors.RED)
+                {
+                    Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
+                    RaycastHit hit;
+                    Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.collider.GetComponent<ShootingTarget>())
+                        {
+                            hit.collider.GetComponent<ShootingTarget>().OnHit();
+                        }
+                    }
+                }
+                else if (GameManager.Singleton.currentColor == GameManager.colors.BLUE)
+                {
+                    //dash
+                }
+
+                _input.ability = false;
             }
         }
 
