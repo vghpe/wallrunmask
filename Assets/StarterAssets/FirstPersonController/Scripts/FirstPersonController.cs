@@ -50,8 +50,10 @@ namespace StarterAssets
         public float TopClamp = 90.0f;
         [Tooltip("How far in degrees can you move the camera down")]
         public float BottomClamp = -90.0f;
-        [Tooltip("Wall takes over control")]
+        [Tooltip("Run along wall")]
         public bool WallRun = false;
+        [Tooltip("When double jump is activate")]
+        public bool DoubleJump = false;
         [Tooltip("WallRunningSpeed")]
         public float WallRunningSpeed = 10.0f;
         [Tooltip("ControlFactor against wall")]
