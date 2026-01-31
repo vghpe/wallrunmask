@@ -12,6 +12,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -43,10 +44,25 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		public void OnColor1(InputValue value)
+		{
+			Color1Input(value.isPressed);
+		}
+
+        public void OnColor2(InputValue value)
+        {
+            Color2Input(value.isPressed);
+        }
+
+        public void OnColor3(InputValue value)
+        {
+            Color3Input(value.isPressed);
+        }
 #endif
 
 
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 
@@ -65,8 +81,35 @@ namespace StarterAssets
 		{
 			sprint = newSprintState;
 		}
-		
-		private void OnApplicationFocus(bool hasFocus)
+
+		public void Color1Input (bool newColorState)
+		{
+			if (newColorState)
+			{
+				GameManager.Singleton.currentColor = GameManager.colors.RED;
+                GameManager.Singleton.ColorChangeEvent.Invoke();
+            }
+		}
+
+        public void Color2Input(bool newColorState)
+        {
+            if (newColorState)
+            {
+                GameManager.Singleton.currentColor = GameManager.colors.GREEN;
+                GameManager.Singleton.ColorChangeEvent.Invoke();
+            }
+        }
+
+        public void Color3Input(bool newColorState)
+        {
+            if (newColorState)
+            {
+                GameManager.Singleton.currentColor = GameManager.colors.BLUE;
+                GameManager.Singleton.ColorChangeEvent.Invoke();
+            }
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
 		}
