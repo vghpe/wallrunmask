@@ -808,8 +808,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 1394.0,
-            "y": -41.00001525878906
+            "x": 2043.9998779296875,
+            "y": 249.0
         },
         "m_Blocks": [
             {
@@ -825,8 +825,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 1394.0,
-            "y": 158.99996948242188
+            "x": 2043.9998779296875,
+            "y": 448.99993896484377
         },
         "m_Blocks": [
             {
@@ -4699,7 +4699,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Smoothness",
     "m_StageCapability": 2,
-    "m_Value": 0.5,
+    "m_Value": 0.0,
     "m_DefaultValue": 0.5,
     "m_Labels": [],
     "m_LiteralMode": false
