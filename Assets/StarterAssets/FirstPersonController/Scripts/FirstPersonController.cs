@@ -64,7 +64,13 @@ namespace StarterAssets
         [SerializeField] public float WallJumpForce = 10.0f;
         [Tooltip("Wall jump duration.")]
         [SerializeField] public float WallJumpDuration = 0.2f;
+        [Header("Wall Run Camera")]
+        public float WallRunCameraRoll = 20.0f;
+        public float WallRunRollSpeed = 2.0f;
+        [HideInInspector]
+        public int WallSide = 0; // -1 = left, +1 = right
 
+        private float _currentCameraRoll;
 
         // cinemachine
         private float _cinemachineTargetPitch;
@@ -139,6 +145,16 @@ namespace StarterAssets
         private void LateUpdate()
         {
             CameraRotation();
+            float targetRoll = 0.0f;
+
+            if (WallRun)
+            {
+                targetRoll = WallRunCameraRoll * WallSide;
+            }
+
+            _currentCameraRoll = Mathf.Lerp(_currentCameraRoll, targetRoll, Time.deltaTime * WallRunRollSpeed * _speed);
+
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, _currentCameraRoll);
         }
 
         private void GroundedCheck()
@@ -223,6 +239,11 @@ namespace StarterAssets
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
 
+        private void Jump()
+        {
+            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+        }
+
         private void JumpAndGravity()
         {
             if (Grounded)
@@ -240,7 +261,7 @@ namespace StarterAssets
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    Jump();
                 }
 
                 // jump timeout
@@ -260,6 +281,11 @@ namespace StarterAssets
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
 
+                if (DoubleJump && Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    DoubleJump = false;
+                    Jump();
+                }
                 // if we are not grounded, do not jump
                 _input.jump = false;
             }
