@@ -54,8 +54,15 @@ namespace StarterAssets
         public bool WallRun = false;
         [Tooltip("WallRunningSpeed")]
         public float WallRunningSpeed = 10.0f;
-        [Tooltip("ControlFactor")]
-        public float ControlFactorDragAgainstWall = 0.5f;
+        [Tooltip("ControlFactor against wall")]
+        public float WallControlFactor = 0.5f;
+        [Tooltip("How much is dragged towards wall.")]
+        [SerializeField] public float WallDragPower = 25;
+        [Tooltip("Wall jump force.")]
+        [SerializeField] public float WallJumpForce = 10.0f;
+        [Tooltip("Wall jump duration.")]
+        [SerializeField] public float WallJumpDuration = 0.2f;
+
 
         // cinemachine
         private float _cinemachineTargetPitch;
@@ -194,8 +201,10 @@ namespace StarterAssets
                 _speed = targetSpeed;
             }
 
+            float inputScale = WallRun ? 0.25f : 1f;
+
             // normalise input direction
-            Vector3 inputDirection = transform.forward + transform.right * _input.move.x;
+            Vector3 inputDirection = (transform.forward + transform.right * _input.move.x) * inputScale;
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
