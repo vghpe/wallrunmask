@@ -80,7 +80,6 @@ GameObject:
   - component: {fileID: 2370285287124126959}
   - component: {fileID: 4887772053436223747}
   - component: {fileID: 4307979841128963701}
-  - component: {fileID: 31166592563803153}
   m_Layer: 0
   m_Name: Disabled
   m_TagString: Untagged
@@ -315,7 +314,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 83
+  m_VersionIndex: 110
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -401,19 +400,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4868022037310019150}
   m_Mesh: {fileID: 0}
---- !u!114 &31166592563803153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4868022037310019150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4f3d3486f79e4545921c9edf35461d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HiddenPlatform
-  color: 1
 --- !u!1 &7028343894993304485
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +411,7 @@ GameObject:
   - component: {fileID: 8038356693598227111}
   - component: {fileID: 4009405932644757814}
   - component: {fileID: 375881563566021659}
+  - component: {fileID: 862213526541421736}
   m_Layer: 0
   m_Name: Wall_1x8x8
   m_TagString: Untagged
@@ -484,6 +471,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0.5, y: 0.5, z: 0.5}
+--- !u!114 &862213526541421736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028343894993304485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8269c3248a3e04c57a3a31cfb9750c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Platform
+  mode: 0
+  color: 0
+  activeVisual: {fileID: 8698504863618489226}
+  inactiveVisual: {fileID: 4868022037310019150}
 --- !u!1 &8698504863618489226
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +500,6 @@ GameObject:
   - component: {fileID: 1478455519735667212}
   - component: {fileID: 9161541496221072260}
   - component: {fileID: 6723450304113508594}
-  - component: {fileID: 4359447579323305897}
   m_Layer: 0
   m_Name: Enabled
   m_TagString: Untagged
@@ -732,7 +734,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 83
+  m_VersionIndex: 110
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -818,16 +820,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8698504863618489226}
   m_Mesh: {fileID: 0}
---- !u!114 &4359447579323305897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8698504863618489226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e09ea7b1853644f46be22afb134f97ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorPlatform
-  color: 0

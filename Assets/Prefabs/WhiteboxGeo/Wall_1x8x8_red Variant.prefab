@@ -12,42 +12,34 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 862213526541421736, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 862213526541421736, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
+      propertyPath: color
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2841356227119801928, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: color
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4102240056996230573, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4102240056996230573, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 83
-      objectReference: {fileID: 0}
-    - target: {fileID: 4307979841128963701, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
-      propertyPath: m_Mesh
-      value: 
+      value: 92
       objectReference: {fileID: 0}
     - target: {fileID: 4359447579323305897, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: color
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4863691519913230021, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863691519913230021, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_VersionIndex
-      value: 83
+      value: 92
       objectReference: {fileID: 0}
     - target: {fileID: 4887772053436223747, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1eae75987c9ec4900a83d0d1c1aa6545, type: 2}
-    - target: {fileID: 6723450304113508594, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7028343894993304485, guid: 07bbdda1a21f142989c5a184a94c2626, type: 3}
       propertyPath: m_Name
       value: Wall_1x8x8_red Variant
