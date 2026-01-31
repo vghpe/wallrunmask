@@ -9,6 +9,13 @@ public class WallRun : MonoBehaviour
     private float playerGravity;
     private float playerJump;
     private float stepOffset;
+    private void Start()
+    {
+        if (firstPersonController == null)
+        {
+            firstPersonController = GameObject.Find("PlayerCapsule").GetComponent<FirstPersonController>();
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         playerGravity = firstPersonController.Gravity;
