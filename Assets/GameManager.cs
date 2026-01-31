@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public enum colors
     {
+        NONE,
         RED,
         GREEN,
         BLUE
