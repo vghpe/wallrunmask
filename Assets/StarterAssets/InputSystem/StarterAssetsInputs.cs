@@ -12,6 +12,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool ability;
 		
 
 		[Header("Movement Settings")]
@@ -59,6 +60,11 @@ namespace StarterAssets
         {
             Color3Input(value.isPressed);
         }
+
+		public void OnAbility(InputValue value)
+		{
+			AbilityInput(value.isPressed);
+		}
 #endif
 
 
@@ -108,6 +114,11 @@ namespace StarterAssets
                 GameManager.Singleton.ColorChangeEvent.Invoke();
             }
         }
+
+		public void AbilityInput(bool newAbilityState)
+		{
+			ability = newAbilityState;
+		}
 
         private void OnApplicationFocus(bool hasFocus)
 		{

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public enum colors
     {
+        NONE,
         RED,
         GREEN,
         BLUE
@@ -30,7 +31,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         currentColor = colors.RED;
-
+        
+        // Delay the initial invoke to ensure all platforms have subscribed
+        Invoke(nameof(InvokeColorChange), 0.1f);
+    }
+    
+    private void InvokeColorChange()
+    {
         ColorChangeEvent.Invoke();
     }
 }

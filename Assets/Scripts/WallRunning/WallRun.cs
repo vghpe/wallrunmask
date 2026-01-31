@@ -9,6 +9,13 @@ public class WallRun : MonoBehaviour
     private float playerGravity;
     private float playerJump;
     private float stepOffset;
+    private void Start()
+    {
+        if (firstPersonController == null)
+        {
+            firstPersonController = GameObject.Find("PlayerCapsule").GetComponent<FirstPersonController>();
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         playerGravity = firstPersonController.Gravity;
@@ -34,7 +41,13 @@ public class WallRun : MonoBehaviour
     {
         while (!firstPersonController.WallRun)
         {
-            Vector3 toTarget = transform.position - firstPersonController.transform.position; 
+            Vector3 toTarget = transform.position - firstPersonController.transform.position;
+            float stopRadius = 0.3f;
+            if (toTarget.sqrMagnitude < stopRadius * stopRadius)
+            {
+                yield return null;
+                continue;
+            }
             Vector3 pull = firstPersonController.WallDragPower * Time.deltaTime * toTarget.normalized; 
             firstPersonController._controller.Move(pull); 
             yield return null;

@@ -11,7 +11,12 @@ public class HiddenPlatform : MonoBehaviour
 
     void OnColorChange()
     {
-        if (GameManager.Singleton.currentColor == color)
+        // If platform color is NONE, always stay visible
+        if (color == GameManager.colors.NONE)
+        {
+            gameObject.SetActive(true);
+        }
+        else if (GameManager.Singleton.currentColor == color)
         {
             gameObject.SetActive(false);
         }

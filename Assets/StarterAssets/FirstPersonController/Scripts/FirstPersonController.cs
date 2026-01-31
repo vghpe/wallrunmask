@@ -16,6 +16,8 @@ namespace StarterAssets
         public float MoveSpeed = 4.0f;
         //[Tooltip("Sprint speed of the character in m/s")]
         //public float SprintSpeed = 6.0f;
+        [Tooltip("Max speed multiplier on platforms")]
+        public float MaxSpeedMultiplier;
         [Tooltip("Rotation speed of the character")]
         public float RotationSpeed = 1.0f;
         [Tooltip("Acceleration and deceleration")]
@@ -50,8 +52,10 @@ namespace StarterAssets
         public float TopClamp = 90.0f;
         [Tooltip("How far in degrees can you move the camera down")]
         public float BottomClamp = -90.0f;
-        [Tooltip("Wall takes over control")]
+        [Tooltip("Run along wall")]
         public bool WallRun = false;
+        [Tooltip("When double jump is activate")]
+        public bool DoubleJump = false;
         [Tooltip("WallRunningSpeed")]
         public float WallRunningSpeed = 10.0f;
         [Tooltip("ControlFactor against wall")]
@@ -62,7 +66,13 @@ namespace StarterAssets
         [SerializeField] public float WallJumpForce = 10.0f;
         [Tooltip("Wall jump duration.")]
         [SerializeField] public float WallJumpDuration = 0.2f;
+        [Header("Wall Run Camera")]
+        public float WallRunCameraRoll = 20.0f;
+        public float WallRunRollSpeed = 2.0f;
+        [HideInInspector]
+        public int WallSide = 0; // -1 = left, +1 = right
 
+        private float _currentCameraRoll;
 
         // cinemachine
         private float _cinemachineTargetPitch;
@@ -86,7 +96,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
-        private const float _threshold = 0.01f;
+        private const float _threshold = 0.0001f;
 
         private bool IsCurrentDeviceMouse
         {
@@ -132,11 +142,22 @@ namespace StarterAssets
                 GroundedCheck();
                 Move();
             }
+            Ability();
         }
 
         private void LateUpdate()
         {
             CameraRotation();
+            float targetRoll = 0.0f;
+
+            if (WallRun)
+            {
+                targetRoll = WallRunCameraRoll * WallSide;
+            }
+
+            _currentCameraRoll = Mathf.Lerp(_currentCameraRoll, targetRoll, Time.deltaTime * WallRunRollSpeed * _speed);
+
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, _currentCameraRoll);
         }
 
         private void GroundedCheck()
@@ -170,9 +191,15 @@ namespace StarterAssets
 
         private void Move()
         {
+            float maxSpeedMod = 1.0f;
+            if (Grounded || WallRun) 
+            {
+                maxSpeedMod = MaxSpeedMultiplier;
+            }
+            
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-            float targetSpeed = MoveSpeed;
+            float targetSpeed = MoveSpeed * maxSpeedMod;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -216,9 +243,13 @@ namespace StarterAssets
 
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
-
             // move the player
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        }
+
+        private void Jump()
+        {
+            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
         }
 
         private void JumpAndGravity()
@@ -238,7 +269,7 @@ namespace StarterAssets
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    Jump();
                 }
 
                 // jump timeout
@@ -258,6 +289,11 @@ namespace StarterAssets
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
 
+                if (DoubleJump && Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    DoubleJump = false;
+                    Jump();
+                }
                 // if we are not grounded, do not jump
                 _input.jump = false;
             }
@@ -266,6 +302,33 @@ namespace StarterAssets
             if (_verticalVelocity < _terminalVelocity)
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
+            }
+        }
+
+        public void Ability()
+        {
+            if (_input.ability)
+            {
+                if (GameManager.Singleton.currentColor == GameManager.colors.RED)
+                {
+                    Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
+                    RaycastHit hit;
+                    Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.collider.GetComponent<ShootingTarget>())
+                        {
+                            hit.collider.GetComponent<ShootingTarget>().OnHit();
+                        }
+                    }
+                }
+                else if (GameManager.Singleton.currentColor == GameManager.colors.BLUE)
+                {
+                    //dash
+                }
+
+                _input.ability = false;
             }
         }
 
