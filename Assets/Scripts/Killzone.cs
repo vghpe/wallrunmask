@@ -22,6 +22,10 @@ public class Killzone : MonoBehaviour
     [Tooltip("Restart music tracks on respawn")]
     public bool restartMusicOnRespawn = false;
     
+    [Header("Countdown")]
+    [Tooltip("Show countdown on respawn")]
+    public bool showCountdownOnRespawn = true;
+    
     private GameObject _player;
 
     private void Start()
@@ -112,6 +116,12 @@ public class Killzone : MonoBehaviour
             if (restartMusicOnRespawn && MusicManager.Singleton != null)
             {
                 MusicManager.Singleton.RestartAllTracks();
+            }
+            
+            // Show countdown on respawn
+            if (showCountdownOnRespawn && CountdownController.Singleton != null)
+            {
+                CountdownController.Singleton.StartCountdown();
             }
         }
         else

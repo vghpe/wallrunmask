@@ -111,7 +111,7 @@ namespace StarterAssets
         private float _cinemachineTargetPitch;
 
         // player
-        [SerializeField] private float _speed;
+        private float _speed;
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
@@ -294,7 +294,7 @@ namespace StarterAssets
                 _boostPending = false;
                 _boostTimer = BoostDuration;
                 _verticalVelocity = 0f; // Reset gravity so upward boost works
-                //Debug.Log($"FPC: Boost STARTED! BoostMod: {BoostMod}, BoostDirection: {BoostDirection}, Duration: {BoostDuration}");
+                Debug.Log($"FPC: Boost STARTED! BoostMod: {BoostMod}, BoostDirection: {BoostDirection}, Duration: {BoostDuration}");
             }
 
             if (_boostTimer > 0)
@@ -304,7 +304,7 @@ namespace StarterAssets
             else if (_isBoosting)
             {
                 _isBoosting = false;
-                //Debug.Log("FPC: Boost ENDED - timer ran out");
+                Debug.Log("FPC: Boost ENDED - timer ran out");
             }
 
             // Only apply boost falloff AFTER the boost duration ends
@@ -320,7 +320,7 @@ namespace StarterAssets
             if (_isBoosting || BoostMod > 0)
             {
                 Vector3 boostVector = BoostDirection * BoostMod;
-                //Debug.Log($"FPC: BoostMod: {previousBoostMod:F2} -> {BoostMod:F2}, BoostVector: {boostVector}, isBoosting: {_isBoosting}, deltaTime: {Time.deltaTime:F4}");
+                Debug.Log($"FPC: BoostMod: {previousBoostMod:F2} -> {BoostMod:F2}, BoostVector: {boostVector}, isBoosting: {_isBoosting}, deltaTime: {Time.deltaTime:F4}");
             }
             
             // Update debug values for Inspector
@@ -347,7 +347,7 @@ namespace StarterAssets
                 _controller.Move(finalMoveVector);
                 Vector3 posAfter = transform.position;
                 Vector3 actualMovement = posAfter - posBefore;
-                //Debug.Log($"FPC MOVE DEBUG: MoveVector: {finalMoveVector}, PosBefore: {posBefore}, PosAfter: {posAfter}, ActualMove: {actualMovement}, Grounded: {Grounded}");
+                Debug.Log($"FPC MOVE DEBUG: MoveVector: {finalMoveVector}, PosBefore: {posBefore}, PosAfter: {posAfter}, ActualMove: {actualMovement}, Grounded: {Grounded}");
             }
             else
             {
@@ -439,6 +439,7 @@ namespace StarterAssets
                 {
                     Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
 
+                    character.Dash();
                     DashDirection = CinemachineCameraTarget.transform.forward;
                     DashMod = DashSpeed;
                     CanDash = false;
@@ -464,7 +465,6 @@ namespace StarterAssets
         void OnRestart()
         {
             _speed = 0;
-            Debug.Log("restart" + _speed);
             _controller.SimpleMove(Vector3.zero);
         }
 
