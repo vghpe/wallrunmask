@@ -1635,21 +1635,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &698116540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698116537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2299bb5bf16f26646b3c46c1ca5e2738, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimatePlatform
-  playerController: {fileID: 604388291}
-  activationDistance: 9
-  ModThreshold: 0.1
 --- !u!1 &702866749
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,6 +1919,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974805908}
   - component: {fileID: 974805909}
+  - component: {fileID: 974805910}
   m_Layer: 0
   m_Name: JumpTrigger
   m_TagString: Untagged
@@ -1977,6 +1963,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &974805910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974805907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2299bb5bf16f26646b3c46c1ca5e2738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatePlatform
+  playerController: {fileID: 604388291}
+  activationDistance: 9
+  ModThreshold: 0.1
 --- !u!1001 &993335332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3143,9 +3144,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af91db8409fee984eaab75cdb7cbc8ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 698116539}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af91db8409fee984eaab75cdb7cbc8ac, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 698116540}
   m_SourcePrefab: {fileID: 100100000, guid: af91db8409fee984eaab75cdb7cbc8ac, type: 3}
 --- !u!1001 &2026291191
 PrefabInstance:

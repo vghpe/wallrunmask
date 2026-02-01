@@ -11,7 +11,7 @@ public class AnimatePlatform : MonoBehaviour
     private bool activateOnce;
     void Start()
     {
-        animationController = GetComponent<Animator>();
+        animationController = transform.parent.GetComponent<Animator>();
         if (playerController == null )
         {
             playerController = GameObject.Find("PlayerCapsule").GetComponent<FirstPersonController>();
