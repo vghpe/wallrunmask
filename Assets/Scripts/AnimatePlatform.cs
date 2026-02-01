@@ -11,7 +11,7 @@ public class AnimatePlatform : MonoBehaviour
     private bool activateOnce;
     void Start()
     {
-        animationController = GetComponent<Animator>();
+        animationController = transform.parent.GetComponent<Animator>();
         if (playerController == null )
         {
             playerController = GameObject.Find("PlayerCapsule").GetComponent<FirstPersonController>();
@@ -33,5 +33,10 @@ public class AnimatePlatform : MonoBehaviour
             activateOnce = true;
             //Add dash here maybe.
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.LogWarning("No dash functionality for ramp yet.");
     }
 }
