@@ -13,6 +13,11 @@ public class BoostRamp : ActivatedObjectParent
     [Tooltip("Upward force to add (for ramp launch feel)")]
     public float upwardBoost = 8f;
 
+    private void Start()
+    {
+        GameManager.Singleton.OnGameRestart.AddListener(OnRestart);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log($"BoostRamp: OnTriggerEnter with {other.name}, tag: {other.tag}");
@@ -51,5 +56,10 @@ public class BoostRamp : ActivatedObjectParent
         {
             Debug.Log($"BoostRamp: Ignoring non-Player object");
         }
+    }
+
+    void OnRestart()
+    {
+        Activated = false;
     }
 }
