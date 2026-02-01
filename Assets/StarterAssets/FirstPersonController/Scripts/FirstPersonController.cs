@@ -440,6 +440,7 @@ namespace StarterAssets
                 {
                     Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
 
+                    character.Dash();
                     DashDirection = CinemachineCameraTarget.transform.forward;
                     DashMod = DashSpeed;
                     CanDash = false;

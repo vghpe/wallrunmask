@@ -44,7 +44,12 @@ public class AnimateCharacter : MonoBehaviour
 
     public void Shoot()
     {
-        animationController.SetTrigger("shoot");
+        animationController.SetTrigger("Shoot");
+    }
+
+    public void Dash()
+    {
+        animationController.SetTrigger("Dash");
     }
 
     void ChangeMask()
