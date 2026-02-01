@@ -13,6 +13,12 @@ public class ShootingGallery : MonoBehaviour
 
     [Header("Optional Activation")]
     public GameObject activationTarget;
+    
+    [Header("Hit Effect")]
+    [Tooltip("Particle system prefab to spawn when a target is hit")]
+    public GameObject hitParticlePrefab;
+    [Tooltip("Auto-destroy particle system after this many seconds (0 = don't auto-destroy)")]
+    public float particleLifetime = 2f;
 
     private HashSet<ShootingTarget> hitTargets = new HashSet<ShootingTarget>();
 
@@ -65,6 +71,17 @@ public class ShootingGallery : MonoBehaviour
 
     void OnTargetHit(ShootingTarget target)
     {
+        // Spawn hit particle effect at target location
+        if (hitParticlePrefab != null && target != null)
+        {
+            GameObject particleInstance = Instantiate(hitParticlePrefab, target.transform.position, Quaternion.Euler(90, 0, 0));
+            
+            if (particleLifetime > 0)
+            {
+                Destroy(particleInstance, particleLifetime);
+            }
+        }
+        
         hitTargets.Add(target);
 
         if (hitTargets.Count >= targets.Count)
