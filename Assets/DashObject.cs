@@ -16,7 +16,6 @@ public class DashObject : MonoBehaviour
             if (playerController.DashMod > ModThreshold)
             {
                 DashBreak();
-
                 playerController.DashMod += playerController.DashSpeed * 2;
             }
         }

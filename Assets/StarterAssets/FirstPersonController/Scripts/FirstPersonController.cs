@@ -36,14 +36,15 @@ namespace StarterAssets
         [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
         public float FallTimeout = 0.15f;
 
-        [Space(10)]
-        [Tooltip("Speed during the dash in m/s")]
+        [Header("Abilities")]
         public float DashSpeed = 10f;
         public float DashFalloff = 0.85f;
         [System.NonSerialized] public float DashMod;
         [System.NonSerialized] public Vector3 DashDirection;
-        [System.NonSerialized] public bool IsDashing = false;
-       
+        [System.NonSerialized] public float BoostMod;
+        [System.NonSerialized] public Vector3 BoostDirection;
+        [System.NonSerialized] public bool CanDash;
+        [System.NonSerialized] public bool CanDoubleJump = false;
 
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -62,10 +63,10 @@ namespace StarterAssets
         public float TopClamp = 90.0f;
         [Tooltip("How far in degrees can you move the camera down")]
         public float BottomClamp = -90.0f;
+
+        [Header("Wallrunning")]
         [Tooltip("Run along wall")]
         public bool WallRun = false;
-        [Tooltip("When double jump is activate")]
-        public bool DoubleJump = false;
         [Tooltip("WallRunningSpeed")]
         public float WallRunningSpeed = 10.0f;
         [Tooltip("ControlFactor against wall")]
@@ -151,7 +152,14 @@ namespace StarterAssets
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
+            } 
+            else
+            {
+                //ability resets
+                CanDash = true;
+                CanDoubleJump = true;
             }
+
             Ability();
             Dash();
         }
@@ -255,7 +263,7 @@ namespace StarterAssets
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
             // move the player
-            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod) * Time.deltaTime);
+            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + BoostDirection * BoostMod) * Time.deltaTime);
         }
 
         private void Jump()
@@ -267,6 +275,10 @@ namespace StarterAssets
         {
             if (Grounded)
             {
+                //ability resets
+                CanDash = true;
+                CanDoubleJump = true;
+
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
 
@@ -300,9 +312,9 @@ namespace StarterAssets
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
 
-                if (DoubleJump && Keyboard.current.spaceKey.wasPressedThisFrame)
+                if (CanDoubleJump && Keyboard.current.spaceKey.wasPressedThisFrame && GameManager.Singleton.currentColor == GameManager.colors.GREEN)
                 {
-                    DoubleJump = false;
+                    CanDoubleJump = false;
                     Jump();
                 }
                 // if we are not grounded, do not jump
@@ -334,12 +346,13 @@ namespace StarterAssets
                         }
                     }
                 }
-                else if (GameManager.Singleton.currentColor == GameManager.colors.BLUE)
+                else if (GameManager.Singleton.currentColor == GameManager.colors.BLUE && CanDash && !Grounded)
                 {
                     Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
 
                     DashDirection = CinemachineCameraTarget.transform.forward;
                     DashMod = DashSpeed;
+                    CanDash = false;
                 }
                 _input.ability = false;
             }
@@ -350,9 +363,18 @@ namespace StarterAssets
             if (DashMod > 0)
             {
                 DashMod *= DashFalloff;
-                if (DashMod <= 0)
+                if (DashMod <= 0.01f)
                 {
                     DashMod = 0;
+                }
+            }
+
+            if (BoostMod > 0)
+            {
+                BoostMod *= DashFalloff;
+                if (BoostMod <= 0.01f)
+                {
+                    BoostMod = 0;
                 }
             }
         }
