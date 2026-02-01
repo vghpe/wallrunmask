@@ -15,12 +15,37 @@ public class WallRun : MonoBehaviour
         {
             firstPersonController = GameObject.Find("PlayerCapsule").GetComponent<FirstPersonController>();
         }
+        GameManager.Singleton.ColorChangeEvent.AddListener(ChangedMask);
+        StartCoroutine(SetStartVars());
     }
-    private void OnTriggerEnter(Collider other)
+
+    IEnumerator SetStartVars()
     {
+        yield return new WaitForSeconds(0.5f);
         playerGravity = firstPersonController.Gravity;
         playerJump = firstPersonController.JumpHeight;
         stepOffset = firstPersonController._controller.stepOffset;
+    }
+    void ChangedMask()
+    {
+        if (firstPersonController.WallRun)
+        {
+            ExitRunning();
+        }
+    }
+
+    private void ExitRunning()
+    {
+        firstPersonController.WallRun = false;
+        firstPersonController.WallSide = 0;
+        firstPersonController.Gravity = playerGravity;
+        firstPersonController.JumpHeight = playerJump;
+        firstPersonController._controller.stepOffset = stepOffset;
+        StopAllCoroutines(); //Probably not needed, since TakeControl should already have ended
+        Debug.Log("Stopped wall running.");
+    }
+    private void OnTriggerEnter(Collider other)
+    {
         firstPersonController._controller.stepOffset = 0.0f;
         firstPersonController.JumpHeight = 0.0f;
         firstPersonController.Gravity = 0.0f;
@@ -30,11 +55,7 @@ public class WallRun : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        firstPersonController.Gravity = playerGravity;
-        firstPersonController.JumpHeight = playerJump;
-        firstPersonController._controller.stepOffset = stepOffset;
-        StopAllCoroutines(); //Probably not needed, since TakeControl should already have ended
-        Debug.Log("Stopped wall running.");
+        ExitRunning();
     }
 
     IEnumerator TakeControl()
