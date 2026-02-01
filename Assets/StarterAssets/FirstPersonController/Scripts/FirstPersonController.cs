@@ -167,7 +167,6 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
 
             character = transform.GetChild(0).GetComponent<AnimateCharacter>();
-
             GameManager.Singleton.OnGameRestart.AddListener(OnRestart);
         }
 
