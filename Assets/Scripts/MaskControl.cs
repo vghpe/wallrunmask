@@ -14,11 +14,70 @@ public class MaskControl : MonoBehaviour
     
     private Coroutine moveCoroutine;
     private int currentSpriteIndex = -1;
+    
+    // Store initial positions for reset
+    private Vector3 iconInitialPosition;
+    private Vector3[] colorSpritesInitialPositions;
+    private Vector3[] colorSpritesVisiblePositions;
+    private Coroutine[] spriteCoroutines;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Store initial positions
+        iconInitialPosition = icon.localPosition;
+        colorSpritesInitialPositions = new Vector3[colorSprites.Length];
+        colorSpritesVisiblePositions = new Vector3[colorSprites.Length];
+        spriteCoroutines = new Coroutine[colorSprites.Length];
+        
+        for (int i = 0; i < colorSprites.Length; i++)
+        {
+            colorSpritesInitialPositions[i] = colorSprites[i].localPosition;
+            colorSpritesVisiblePositions[i] = new Vector3(
+                colorSpritesInitialPositions[i].x - spriteMoveDistance,
+                colorSpritesInitialPositions[i].y,
+                colorSpritesInitialPositions[i].z
+            );
+        }
+        
         GameManager.Singleton.ColorChangeEvent.AddListener(OnColorChange);
+        GameManager.Singleton.OnGameRestart.AddListener(ResetMasks);
+    }
+
+    public void ResetMasks()
+    {
+        // Stop any ongoing animations
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+        StopAllCoroutines();
+        
+        // Reset icon position
+        icon.localPosition = iconInitialPosition;
+        
+        // Reset all color sprite positions to hidden
+        for (int i = 0; i < colorSprites.Length; i++)
+        {
+            colorSprites[i].localPosition = colorSpritesInitialPositions[i];
+            spriteCoroutines[i] = null;
+        }
+        
+        // Show the current color's sprite
+        int currentColor = (int)GameManager.Singleton.currentColor;
+        if (currentColor >= 0 && currentColor < colorSprites.Length)
+        {
+            colorSprites[currentColor].localPosition = colorSpritesVisiblePositions[currentColor];
+            currentSpriteIndex = currentColor;
+            
+            // Move icon to current color position
+            icon.localPosition = masks[currentColor].localPosition;
+        }
+        else
+        {
+            currentSpriteIndex = -1;
+        }
     }
 
     void OnColorChange()
@@ -38,25 +97,34 @@ public class MaskControl : MonoBehaviour
 
     void AnimateColorSprites(int newColorIndex)
     {
-        // Animate out the current sprite
+        // Stop and animate out the current sprite
         if (currentSpriteIndex >= 0 && currentSpriteIndex < colorSprites.Length)
         {
-            StartCoroutine(AnimateSpriteOut(colorSprites[currentSpriteIndex]));
+            if (spriteCoroutines[currentSpriteIndex] != null)
+            {
+                StopCoroutine(spriteCoroutines[currentSpriteIndex]);
+            }
+            spriteCoroutines[currentSpriteIndex] = StartCoroutine(AnimateSpriteOut(currentSpriteIndex));
         }
         
-        // Animate in the new sprite
+        // Stop and animate in the new sprite
         if (newColorIndex >= 0 && newColorIndex < colorSprites.Length)
         {
-            StartCoroutine(AnimateSpriteIn(colorSprites[newColorIndex]));
+            if (spriteCoroutines[newColorIndex] != null)
+            {
+                StopCoroutine(spriteCoroutines[newColorIndex]);
+            }
+            spriteCoroutines[newColorIndex] = StartCoroutine(AnimateSpriteIn(newColorIndex));
         }
         
         currentSpriteIndex = newColorIndex;
     }
 
-    IEnumerator AnimateSpriteIn(RectTransform sprite)
+    IEnumerator AnimateSpriteIn(int spriteIndex)
     {
+        RectTransform sprite = colorSprites[spriteIndex];
         Vector3 startPosition = sprite.localPosition;
-        Vector3 targetPosition = new Vector3(startPosition.x - spriteMoveDistance, startPosition.y, startPosition.z);
+        Vector3 targetPosition = colorSpritesVisiblePositions[spriteIndex];
         float elapsed = 0f;
 
         while (elapsed < spriteMoveDuration)
@@ -72,12 +140,14 @@ public class MaskControl : MonoBehaviour
         }
 
         sprite.localPosition = targetPosition;
+        spriteCoroutines[spriteIndex] = null;
     }
 
-    IEnumerator AnimateSpriteOut(RectTransform sprite)
+    IEnumerator AnimateSpriteOut(int spriteIndex)
     {
+        RectTransform sprite = colorSprites[spriteIndex];
         Vector3 startPosition = sprite.localPosition;
-        Vector3 targetPosition = new Vector3(startPosition.x + spriteMoveDistance, startPosition.y, startPosition.z);
+        Vector3 targetPosition = colorSpritesInitialPositions[spriteIndex];
         float elapsed = 0f;
 
         while (elapsed < spriteMoveDuration)
@@ -93,6 +163,7 @@ public class MaskControl : MonoBehaviour
         }
 
         sprite.localPosition = targetPosition;
+        spriteCoroutines[spriteIndex] = null;
     }
 
     IEnumerator MoveIcon(Vector3 targetPosition)
