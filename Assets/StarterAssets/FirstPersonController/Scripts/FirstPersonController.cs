@@ -263,6 +263,13 @@ namespace StarterAssets
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
             // move the player
+            //BoostDirection = transform.TransformDirection(BoostDirection);
+            BoostDirection = transform.InverseTransformDirection(BoostDirection);
+            if (BoostDirection != null)
+            {
+                Debug.Log(BoostDirection);
+                Debug.Log(transform.InverseTransformDirection(BoostDirection));
+            }
             _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + BoostDirection * BoostMod) * Time.deltaTime);
         }
 
