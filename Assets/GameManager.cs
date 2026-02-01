@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
 
     public enum colors
     {
-        NONE,
         RED,
         GREEN,
-        BLUE
+        BLUE,
+        NONE
     }
 
     public colors currentColor;

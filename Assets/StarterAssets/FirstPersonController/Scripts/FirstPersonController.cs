@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -34,6 +35,15 @@ namespace StarterAssets
         public float JumpTimeout = 0.1f;
         [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
         public float FallTimeout = 0.15f;
+
+        [Space(10)]
+        [Tooltip("Speed during the dash in m/s")]
+        public float DashSpeed = 10f;
+        public float DashFalloff = 0.85f;
+        [System.NonSerialized] public float DashMod;
+        [System.NonSerialized] public Vector3 DashDirection;
+        [System.NonSerialized] public bool IsDashing = false;
+       
 
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -143,6 +153,7 @@ namespace StarterAssets
                 Move();
             }
             Ability();
+            Dash();
         }
 
         private void LateUpdate()
@@ -244,7 +255,7 @@ namespace StarterAssets
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
             // move the player
-            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod) * Time.deltaTime);
         }
 
         private void Jump()
@@ -325,10 +336,24 @@ namespace StarterAssets
                 }
                 else if (GameManager.Singleton.currentColor == GameManager.colors.BLUE)
                 {
-                    //dash
-                }
+                    Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
 
+                    DashDirection = CinemachineCameraTarget.transform.forward;
+                    DashMod = DashSpeed;
+                }
                 _input.ability = false;
+            }
+        }
+
+        public void Dash()
+        {
+            if (DashMod > 0)
+            {
+                DashMod *= DashFalloff;
+                if (DashMod <= 0)
+                {
+                    DashMod = 0;
+                }
             }
         }
 
