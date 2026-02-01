@@ -34,4 +34,9 @@ public class AnimatePlatform : MonoBehaviour
             //Add dash here maybe.
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.LogWarning("No dash functionality for ramp yet.");
+    }
 }
