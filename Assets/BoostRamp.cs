@@ -17,7 +17,7 @@ public class BoostRamp : ActivatedObjectParent
     {
         Debug.Log($"BoostRamp: OnTriggerEnter with {other.name}, tag: {other.tag}");
         
-        if (other.tag == "Player")
+        if (other.tag == "Player" && Activated)
         {
             FirstPersonController playerController = other.gameObject.GetComponent<FirstPersonController>();
 

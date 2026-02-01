@@ -1,11 +1,18 @@
 using UnityEngine;
 using UnityEngine.Events;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class Killzone : MonoBehaviour
 {
     [Header("Respawn Settings")]
     [Tooltip("The transform where the player will respawn")]
     public Transform respawnPoint;
+    
+    [Header("Quick Reset")]
+    [Tooltip("Key to quickly reset the game")]
+    public Key resetKey = Key.R;
     
     [Header("Particle System")]
     [Tooltip("Optional particle system to restart on respawn")]
@@ -14,6 +21,40 @@ public class Killzone : MonoBehaviour
     [Header("Music")]
     [Tooltip("Restart music tracks on respawn")]
     public bool restartMusicOnRespawn = false;
+    
+    private GameObject _player;
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    private void Update()
+    {
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current[resetKey].wasPressedThisFrame)
+        {
+            QuickReset();
+        }
+#endif
+    }
+
+    public void QuickReset()
+    {
+        if (_player == null)
+        {
+            _player = GameObject.FindGameObjectWithTag("Player");
+        }
+        
+        if (_player != null)
+        {
+            RestartGame(_player);
+        }
+        else
+        {
+            Debug.LogWarning("Killzone: Player not found for quick reset!");
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
