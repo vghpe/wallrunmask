@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Killzone : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Killzone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             RespawnPlayer(other.gameObject);
+            GameManager.Singleton.RestartGame();
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     public UnityEvent ColorChangeEvent;
+    public UnityEvent OnGameRestart;
     public static GameManager Singleton;
 
     public enum colors
@@ -39,5 +40,9 @@ public class GameManager : MonoBehaviour
     private void InvokeColorChange()
     {
         ColorChangeEvent.Invoke();
+    }
+    public void RestartGame()
+    {
+        OnGameRestart.Invoke();
     }
 }
