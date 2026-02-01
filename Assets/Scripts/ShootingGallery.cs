@@ -28,11 +28,11 @@ public class ShootingGallery : MonoBehaviour
         if (GameManager.Singleton != null)
         {
             GameManager.Singleton.OnGameRestart.AddListener(ResetGallery);
-            Debug.Log("ShootingGallery: Subscribed to OnGameRestart");
+            //Debug.Log("ShootingGallery: Subscribed to OnGameRestart");
         }
         else
         {
-            Debug.LogWarning("ShootingGallery: GameManager.Singleton is null!");
+            //Debug.LogWarning("ShootingGallery: GameManager.Singleton is null!");
         }
     }
 
@@ -92,7 +92,7 @@ public class ShootingGallery : MonoBehaviour
 
     void OnAllTargetsHit()
     {
-        Debug.Log("ShootingGallery: All targets hit!");
+        //Debug.Log("ShootingGallery: All targets hit!");
 
         // Invoke the Unity Event (for inspector-assigned callbacks)
         onAllTargetsHit?.Invoke();
@@ -110,7 +110,7 @@ public class ShootingGallery : MonoBehaviour
 
     public void ResetGallery()
     {
-        Debug.Log("ShootingGallery: ResetGallery called!");
+        //Debug.Log("ShootingGallery: ResetGallery called!");
         
         hitTargets.Clear();
 
@@ -120,7 +120,7 @@ public class ShootingGallery : MonoBehaviour
             if (target != null)
             {
                 target.gameObject.SetActive(true);
-                Debug.Log("ShootingGallery: Reactivated target " + target.name);
+                //Debug.Log("ShootingGallery: Reactivated target " + target.name);
             }
         }
     }
