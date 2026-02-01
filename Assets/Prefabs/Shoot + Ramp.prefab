@@ -46,6 +46,18 @@ PrefabInstance:
       value: SK_Ramp
       objectReference: {fileID: 0}
     - target: {fileID: 3790617509460516368, guid: 12f107af6df831343963909a4df8a9a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790617509460516368, guid: 12f107af6df831343963909a4df8a9a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790617509460516368, guid: 12f107af6df831343963909a4df8a9a0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790617509460516368, guid: 12f107af6df831343963909a4df8a9a0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.768368
       objectReference: {fileID: 0}
@@ -118,8 +130,8 @@ MonoBehaviour:
   Activated: 0
   Target: {fileID: 0}
   useWorldForward: 1
-  boostMultiplier: 5
-  upwardBoost: 8
+  boostMultiplier: 20
+  upwardBoost: 100
 --- !u!1001 &4441915385821150228
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,9 +13,14 @@ public class BoostRamp : ActivatedObjectParent
     [Tooltip("Upward force to add (for ramp launch feel)")]
     public float upwardBoost = 8f;
 
+    private void Start()
+    {
+        GameManager.Singleton.OnGameRestart.AddListener(OnRestart);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"BoostRamp: OnTriggerEnter with {other.name}, tag: {other.tag}");
+        //Debug.Log($"BoostRamp: OnTriggerEnter with {other.name}, tag: {other.tag}");
         
         if (other.tag == "Player" && Activated)
         {
@@ -23,7 +28,7 @@ public class BoostRamp : ActivatedObjectParent
 
             if (playerController == null)
             {
-                Debug.LogError("BoostRamp: FirstPersonController component NOT FOUND on player!");
+                //Debug.LogError("BoostRamp: FirstPersonController component NOT FOUND on player!");
                 return;
             }
 
@@ -45,11 +50,16 @@ public class BoostRamp : ActivatedObjectParent
             // Use TriggerBoost to properly start the boost
             playerController.TriggerBoost(boostPower, boostDir.normalized);
             
-            Debug.Log($"BoostRamp: BOOST APPLIED! Direction: {boostDir.normalized}, BoostPower: {boostPower}, DashSpeed: {playerController.DashSpeed}");
+            //Debug.Log($"BoostRamp: BOOST APPLIED! Direction: {boostDir.normalized}, BoostPower: {boostPower}, DashSpeed: {playerController.DashSpeed}");
         }
         else
         {
-            Debug.Log($"BoostRamp: Ignoring non-Player object");
+            //Debug.Log($"BoostRamp: Ignoring non-Player object");
         }
+    }
+
+    void OnRestart()
+    {
+        Activated = false;
     }
 }

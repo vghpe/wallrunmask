@@ -13,6 +13,12 @@ public class ShootingGallery : MonoBehaviour
 
     [Header("Optional Activation")]
     public GameObject activationTarget;
+    
+    [Header("Hit Effect")]
+    [Tooltip("Particle system prefab to spawn when a target is hit")]
+    public GameObject hitParticlePrefab;
+    [Tooltip("Auto-destroy particle system after this many seconds (0 = don't auto-destroy)")]
+    public float particleLifetime = 2f;
 
     private HashSet<ShootingTarget> hitTargets = new HashSet<ShootingTarget>();
 
@@ -22,11 +28,11 @@ public class ShootingGallery : MonoBehaviour
         if (GameManager.Singleton != null)
         {
             GameManager.Singleton.OnGameRestart.AddListener(ResetGallery);
-            Debug.Log("ShootingGallery: Subscribed to OnGameRestart");
+            //Debug.Log("ShootingGallery: Subscribed to OnGameRestart");
         }
         else
         {
-            Debug.LogWarning("ShootingGallery: GameManager.Singleton is null!");
+            //Debug.LogWarning("ShootingGallery: GameManager.Singleton is null!");
         }
     }
 
@@ -65,6 +71,17 @@ public class ShootingGallery : MonoBehaviour
 
     void OnTargetHit(ShootingTarget target)
     {
+        // Spawn hit particle effect at target location
+        if (hitParticlePrefab != null && target != null)
+        {
+            GameObject particleInstance = Instantiate(hitParticlePrefab, target.transform.position, Quaternion.Euler(90, 0, 0));
+            
+            if (particleLifetime > 0)
+            {
+                Destroy(particleInstance, particleLifetime);
+            }
+        }
+        
         hitTargets.Add(target);
 
         if (hitTargets.Count >= targets.Count)
@@ -75,7 +92,7 @@ public class ShootingGallery : MonoBehaviour
 
     void OnAllTargetsHit()
     {
-        Debug.Log("ShootingGallery: All targets hit!");
+        //Debug.Log("ShootingGallery: All targets hit!");
 
         // Invoke the Unity Event (for inspector-assigned callbacks)
         onAllTargetsHit?.Invoke();
@@ -93,7 +110,7 @@ public class ShootingGallery : MonoBehaviour
 
     public void ResetGallery()
     {
-        Debug.Log("ShootingGallery: ResetGallery called!");
+        //Debug.Log("ShootingGallery: ResetGallery called!");
         
         hitTargets.Clear();
 
@@ -103,7 +120,7 @@ public class ShootingGallery : MonoBehaviour
             if (target != null)
             {
                 target.gameObject.SetActive(true);
-                Debug.Log("ShootingGallery: Reactivated target " + target.name);
+                //Debug.Log("ShootingGallery: Reactivated target " + target.name);
             }
         }
     }
