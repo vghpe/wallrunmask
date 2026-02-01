@@ -7,7 +7,13 @@ public class MaskControl : MonoBehaviour
     [SerializeField] RectTransform icon;
     [SerializeField] float moveDuration = 0.3f;
     
+    [Header("Color Sprites")]
+    [SerializeField] RectTransform[] colorSprites;
+    [SerializeField] float spriteMoveDistance = 200f;
+    [SerializeField] float spriteMoveDuration = 0.5f;
+    
     private Coroutine moveCoroutine;
+    private int currentSpriteIndex = -1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +31,68 @@ public class MaskControl : MonoBehaviour
             StopCoroutine(moveCoroutine);
         }
         moveCoroutine = StartCoroutine(MoveIcon(targetPosition));
+        
+        // Animate color sprites
+        AnimateColorSprites(currentColor);
+    }
+
+    void AnimateColorSprites(int newColorIndex)
+    {
+        // Animate out the current sprite
+        if (currentSpriteIndex >= 0 && currentSpriteIndex < colorSprites.Length)
+        {
+            StartCoroutine(AnimateSpriteOut(colorSprites[currentSpriteIndex]));
+        }
+        
+        // Animate in the new sprite
+        if (newColorIndex >= 0 && newColorIndex < colorSprites.Length)
+        {
+            StartCoroutine(AnimateSpriteIn(colorSprites[newColorIndex]));
+        }
+        
+        currentSpriteIndex = newColorIndex;
+    }
+
+    IEnumerator AnimateSpriteIn(RectTransform sprite)
+    {
+        Vector3 startPosition = sprite.localPosition;
+        Vector3 targetPosition = new Vector3(startPosition.x - spriteMoveDistance, startPosition.y, startPosition.z);
+        float elapsed = 0f;
+
+        while (elapsed < spriteMoveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / spriteMoveDuration;
+            
+            // Ease out (quadratic)
+            float eased = 1f - (1f - t) * (1f - t);
+            
+            sprite.localPosition = Vector3.Lerp(startPosition, targetPosition, eased);
+            yield return null;
+        }
+
+        sprite.localPosition = targetPosition;
+    }
+
+    IEnumerator AnimateSpriteOut(RectTransform sprite)
+    {
+        Vector3 startPosition = sprite.localPosition;
+        Vector3 targetPosition = new Vector3(startPosition.x + spriteMoveDistance, startPosition.y, startPosition.z);
+        float elapsed = 0f;
+
+        while (elapsed < spriteMoveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / spriteMoveDuration;
+            
+            // Ease in (quadratic)
+            float eased = t * t;
+            
+            sprite.localPosition = Vector3.Lerp(startPosition, targetPosition, eased);
+            yield return null;
+        }
+
+        sprite.localPosition = targetPosition;
     }
 
     IEnumerator MoveIcon(Vector3 targetPosition)
