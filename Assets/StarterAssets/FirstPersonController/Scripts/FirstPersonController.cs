@@ -167,6 +167,8 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
 
             character = transform.GetChild(0).GetComponent<AnimateCharacter>();
+
+            GameManager.Singleton.OnGameRestart.AddListener(OnRestart);
         }
 
         private void Update()
@@ -458,6 +460,12 @@ namespace StarterAssets
             }
 
             // BoostMod falloff is now handled in Move() - removed duplicate falloff here
+        }
+
+        void OnRestart()
+        {
+            _speed = 0;
+            _controller.SimpleMove(Vector3.zero);
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
