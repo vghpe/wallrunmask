@@ -19,23 +19,23 @@ public class AnimatePlatform : MonoBehaviour
     }
     void OnRestart()
     {
+        animationController.SetTrigger("Reset");
         activateOnce = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 toTarget = transform.position - playerController.transform.position;
-        if (toTarget.sqrMagnitude < activationDistance * activationDistance && !activateOnce)
+        if (GetComponent<BoostRamp>().Activated && !activateOnce)
         {
+            animationController.ResetTrigger("Reset"); 
             animationController.SetTrigger("Jump");
             activateOnce = true;
-            //Add dash here maybe.
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.LogWarning("No dash functionality for ramp yet.");
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.LogWarning("No dash functionality for ramp yet.");
+    //}
 }
