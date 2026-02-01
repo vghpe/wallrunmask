@@ -105,6 +105,7 @@ namespace StarterAssets
         public int WallSide = 0; // -1 = left, +1 = right
 
         private float _currentCameraRoll;
+        private AnimateCharacter character;
 
         // cinemachine
         private float _cinemachineTargetPitch;
@@ -164,6 +165,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            character = transform.GetChild(0).GetComponent<AnimateCharacter>();
         }
 
         private void Update()
@@ -422,7 +425,7 @@ namespace StarterAssets
                     Camera camera = CinemachineCameraTarget.GetComponent<Camera>();
                     RaycastHit hit;
                     Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-
+                    character.Shoot();
                     if (Physics.Raycast(ray, out hit))
                     {
                         if (hit.collider.GetComponent<ShootingTarget>())

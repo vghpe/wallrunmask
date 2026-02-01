@@ -42,6 +42,10 @@ public class AnimateCharacter : MonoBehaviour
         }
     }
 
+    public void Shoot()
+    {
+        animationController.SetTrigger("shoot");
+    }
 
     void ChangeMask()
     {
