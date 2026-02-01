@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class BoostRamp : ActivatedObjectParent
 {
+    public Transform Target;
+    public float BoostMagnitude = 3;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             FirstPersonController playerController = other.gameObject.GetComponent<FirstPersonController>();
 
-            playerController.BoostDirection = new Vector3(0,0.5f,1);
-            Debug.Log(playerController.BoostDirection);
-            playerController.BoostMod += playerController.DashSpeed * 6;
+            playerController.BoostDirection = Target.position - transform.position;
+            playerController.BoostMod += playerController.DashSpeed * BoostMagnitude;
         }
     }
 }

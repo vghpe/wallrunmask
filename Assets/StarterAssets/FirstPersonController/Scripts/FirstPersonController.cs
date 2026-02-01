@@ -263,7 +263,7 @@ namespace StarterAssets
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
             // move the player
-            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + BoostDirection * BoostMod) * Time.deltaTime);
+            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + transform.TransformDirection(BoostDirection) * BoostMod) * Time.deltaTime);
         }
 
         private void Jump()
