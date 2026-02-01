@@ -1,12 +1,11 @@
 using StarterAssets;
-using System.Collections;
 using UnityEngine;
 
 public class AnimatePlatform : MonoBehaviour
 {
     private Animator animationController;
     [SerializeField] private FirstPersonController playerController;
-    [SerializeField] private float activationDistance = 9.0f;
+    [SerializeField] private float activationDistance = 12.0f;
     public float ModThreshold = 0.1f;
     private bool activateOnce;
     void Start()

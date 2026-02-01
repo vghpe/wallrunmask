@@ -20,9 +20,14 @@ public class Killzone : MonoBehaviour
         // Check if the colliding object has the "Player" tag
         if (other.CompareTag("Player"))
         {
-            RespawnPlayer(other.gameObject);
-            GameManager.Singleton.RestartGame();
+            RestartGame(other.gameObject);
         }
+    }
+
+    public void RestartGame(GameObject other)
+    {
+        RespawnPlayer(other.gameObject);
+        GameManager.Singleton.RestartGame();
     }
 
     private void RespawnPlayer(GameObject player)
