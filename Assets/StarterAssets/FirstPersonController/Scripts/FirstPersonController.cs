@@ -269,6 +269,7 @@ namespace StarterAssets
             {
                 Debug.Log(BoostDirection);
                 Debug.Log(transform.InverseTransformDirection(BoostDirection));
+                Debug.Log(inputDirection.normalized + DashDirection + BoostDirection);
             }
             _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + BoostDirection * BoostMod) * Time.deltaTime);
         }
