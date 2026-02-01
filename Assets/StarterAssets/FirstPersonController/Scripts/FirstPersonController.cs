@@ -41,9 +41,30 @@ namespace StarterAssets
         public float DashFalloff = 0.85f;
         [System.NonSerialized] public float DashMod;
         [System.NonSerialized] public Vector3 DashDirection;
-        [System.NonSerialized] public float BoostMod;
-        [System.NonSerialized] public Vector3 BoostDirection;
         [System.NonSerialized] public bool CanDash;
+
+        [Header("Boost Ramp Settings")]
+        public float BoostDuration = 0.3f;  // How long at full power before decay starts
+        public float BoostFalloff = 0.75f;  // How quickly boost fades (0-1, lower = faster fade)
+        
+        [Header("Boost Debug (Read-Only at Runtime)")]
+        [SerializeField] private Vector3 _currentBoostDirection;  // Shows current boost direction
+        [SerializeField] private float _currentBoostPower;        // Shows current boost power
+        
+        // Actual boost values used internally
+        [HideInInspector] public Vector3 BoostDirection;
+        [HideInInspector] public float BoostMod;
+        private float _boostTimer = 0f;
+        private bool _isBoosting = false;
+        private bool _boostPending = false;  // Set by BoostRamp to trigger a new boost
+        
+        // Called by BoostRamp to trigger a new boost
+        public void TriggerBoost(float boostPower, Vector3 direction)
+        {
+            BoostMod = boostPower;
+            BoostDirection = direction;
+            _boostPending = true;
+        }
         [System.NonSerialized] public bool CanDoubleJump = false;
 
         [Header("Player Grounded")]
@@ -262,8 +283,72 @@ namespace StarterAssets
 
             //inputDirection = transform.forward + transform.right * _input.move.x;
 
-            // move the player
-            _controller.Move((inputDirection.normalized * _speed + new Vector3(0.0f, _verticalVelocity, 0.0f) + DashDirection * DashMod + transform.TransformDirection(BoostDirection) * BoostMod) * Time.deltaTime);
+            // Handle boost timer and control lock - only start when BoostRamp triggers it
+            if (_boostPending && !_isBoosting)
+            {
+                _isBoosting = true;
+                _boostPending = false;
+                _boostTimer = BoostDuration;
+                _verticalVelocity = 0f; // Reset gravity so upward boost works
+                Debug.Log($"FPC: Boost STARTED! BoostMod: {BoostMod}, BoostDirection: {BoostDirection}, Duration: {BoostDuration}");
+            }
+
+            if (_boostTimer > 0)
+            {
+                _boostTimer -= Time.deltaTime;
+            }
+            else if (_isBoosting)
+            {
+                _isBoosting = false;
+                Debug.Log("FPC: Boost ENDED - timer ran out");
+            }
+
+            // Only apply boost falloff AFTER the boost duration ends
+            float previousBoostMod = BoostMod;
+            if (!_isBoosting && BoostMod > 0)
+            {
+                // Apply falloff only after boost phase ends
+                BoostMod *= Mathf.Pow(BoostFalloff, Time.deltaTime * 60f);
+                if (BoostMod < 0.5f) BoostMod = 0f;
+            }
+
+            // Debug boost values while boosting
+            if (_isBoosting || BoostMod > 0)
+            {
+                Vector3 boostVector = BoostDirection * BoostMod;
+                Debug.Log($"FPC: BoostMod: {previousBoostMod:F2} -> {BoostMod:F2}, BoostVector: {boostVector}, isBoosting: {_isBoosting}, deltaTime: {Time.deltaTime:F4}");
+            }
+            
+            // Update debug values for Inspector
+            _currentBoostDirection = BoostDirection;
+            _currentBoostPower = BoostMod;
+
+            // During boost, reduce player input control
+            // Calculate how much boost is affecting movement (0 = no boost, 1 = full boost)
+            float boostInfluence = Mathf.Clamp01(BoostMod / (DashSpeed * 2f)); // Normalize based on typical boost power
+            
+            // Blend between boost movement and player movement
+            Vector3 playerMovement = inputDirection.normalized * _speed * (1f - boostInfluence);
+
+            // During active boost phase, apply minimal gravity; otherwise normal gravity
+            float verticalComponent = _isBoosting ? _verticalVelocity * 0.1f : _verticalVelocity;
+
+            // Calculate final move vector - player movement is now blended with boost
+            Vector3 finalMoveVector = (playerMovement + new Vector3(0.0f, verticalComponent, 0.0f) + DashDirection * DashMod + BoostDirection * BoostMod) * Time.deltaTime;
+            
+            // Debug: Log position and move vector during boost
+            if (_isBoosting)
+            {
+                Vector3 posBefore = transform.position;
+                _controller.Move(finalMoveVector);
+                Vector3 posAfter = transform.position;
+                Vector3 actualMovement = posAfter - posBefore;
+                Debug.Log($"FPC MOVE DEBUG: MoveVector: {finalMoveVector}, PosBefore: {posBefore}, PosAfter: {posAfter}, ActualMove: {actualMovement}, Grounded: {Grounded}");
+            }
+            else
+            {
+                _controller.Move(finalMoveVector);
+            }
         }
 
         private void Jump()
@@ -369,14 +454,7 @@ namespace StarterAssets
                 }
             }
 
-            if (BoostMod > 0)
-            {
-                BoostMod *= DashFalloff;
-                if (BoostMod <= 0.01f)
-                {
-                    BoostMod = 0;
-                }
-            }
+            // BoostMod falloff is now handled in Move() - removed duplicate falloff here
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
