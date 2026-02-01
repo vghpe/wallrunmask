@@ -166,11 +166,8 @@ namespace StarterAssets
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
 
-<<<<<<< Updated upstream
             character = transform.GetChild(0).GetComponent<AnimateCharacter>();
-=======
             GameManager.Singleton.OnGameRestart.AddListener(OnRestart);
->>>>>>> Stashed changes
         }
 
         private void Update()

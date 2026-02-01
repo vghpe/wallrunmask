@@ -14,14 +14,9 @@ public class PlayerCinematicWallRun : MonoBehaviour
             player = GameObject.Find("PlayerCapsule").transform;
         }
         firstPersonController = player.GetComponent<FirstPersonController>();
-        GameManager.Singleton.ColorChangeEvent.AddListener(ChangedMask);
     }
 
-    void ChangedMask()
-    {
-        firstPersonController.WallRun = false;
-        firstPersonController.WallSide = 0;
-    }
+
     private void OnTriggerEnter(Collider other)
     {
         firstPersonController.WallRun = true;
