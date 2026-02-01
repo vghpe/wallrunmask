@@ -89,6 +89,8 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _Burnout_Intensity: 0
+    - _CRT_Effect: 0
+    - _CRT_Tiling: 20
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2

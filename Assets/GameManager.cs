@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     {
         RED,
         GREEN,
-        BLUE
+        BLUE,
+        NONE
     }
 
     public colors currentColor;
@@ -30,7 +31,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         currentColor = colors.RED;
-
+        
+        // Delay the initial invoke to ensure all platforms have subscribed
+        Invoke(nameof(InvokeColorChange), 0.1f);
+    }
+    
+    private void InvokeColorChange()
+    {
         ColorChangeEvent.Invoke();
     }
 }

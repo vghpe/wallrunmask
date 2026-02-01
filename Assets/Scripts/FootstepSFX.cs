@@ -36,65 +36,59 @@ public class FootstepSFX : MonoBehaviour
     private bool wasGrounded;
     private CharacterController characterController;
     private FirstPersonController firstPersonController;
+    private StarterAssetsInputs input;
     private Rigidbody rb;
 
     private void Awake()
     {
-        // Get or add AudioSource
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
         
-        // Configure AudioSource for footsteps
         audioSource.playOnAwake = false;
-        audioSource.spatialBlend = 0f; // 2D sound for first person
+        audioSource.spatialBlend = 0f;
         
-        // Get movement components from target character
         if (targetCharacter != null)
         {
             characterController = targetCharacter.GetComponent<CharacterController>();
             firstPersonController = targetCharacter.GetComponent<FirstPersonController>();
+            input = targetCharacter.GetComponent<StarterAssetsInputs>();
             rb = targetCharacter.GetComponent<Rigidbody>();
         }
         
-        // Initialize grounded state
         wasGrounded = firstPersonController != null ? firstPersonController.Grounded : true;
     }
 
     private void Update()
     {
-        // Check if grounded using FirstPersonController if available
         bool isGrounded = firstPersonController != null ? firstPersonController.Grounded : true;
         
-        // Detect landing (transition from not grounded to grounded)
         if (isGrounded && !wasGrounded && landingClips != null && landingClips.Length > 0)
         {
             PlayLandingSound();
         }
         
-        // Detect jump (transition from grounded to not grounded)
         if (!isGrounded && wasGrounded && jumpClips != null && jumpClips.Length > 0)
         {
-            PlayJumpSound();
+            if (input != null && input.jump)
+            {
+                PlayJumpSound();
+            }
         }
         
-        // Update previous grounded state
         wasGrounded = isGrounded;
         
         if (!isGrounded || footstepClips == null || footstepClips.Length == 0)
             return;
 
-        // Get current movement speed
         float speed = GetMovementSpeed();
 
-        // Check if moving fast enough
         if (speed > minimumSpeed)
         {
             stepTimer += Time.deltaTime;
 
-            // Play footstep when timer exceeds interval
             if (stepTimer >= stepInterval)
             {
                 PlayFootstep();
@@ -103,19 +97,16 @@ public class FootstepSFX : MonoBehaviour
         }
         else
         {
-            // Reset timer when not moving
             stepTimer = 0f;
         }
     }
 
     private float GetMovementSpeed()
     {
-        // Try CharacterController first
         if (characterController != null)
         {
             return characterController.velocity.magnitude;
         }
-        // Fall back to Rigidbody
         else if (rb != null)
         {
             return rb.linearVelocity.magnitude;
@@ -126,46 +117,25 @@ public class FootstepSFX : MonoBehaviour
 
     private void PlayFootstep()
     {
-        // Pick a random clip
         AudioClip clip = footstepClips[Random.Range(0, footstepClips.Length)];
-        
-        // Apply random pitch variation
         audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        
-        // Apply random volume variation
         audioSource.volume = Random.Range(volumeRange.x, volumeRange.y);
-        
-        // Play the clip
         audioSource.PlayOneShot(clip);
     }
 
     private void PlayLandingSound()
     {
-        // Pick a random landing clip
         AudioClip clip = landingClips[Random.Range(0, landingClips.Length)];
-        
-        // Apply random pitch variation
         audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        
-        // Landing sounds are usually slightly louder than footsteps
         audioSource.volume = Random.Range(volumeRange.y, 1.0f);
-        
-        // Play the clip
         audioSource.PlayOneShot(clip);
     }
 
     private void PlayJumpSound()
     {
-        // Pick a random jump clip
         AudioClip clip = jumpClips[Random.Range(0, jumpClips.Length)];
-        
-        // Apply random pitch variation
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        
-        // Apply random volume variation
+        audioSource.pitch = 1.0f;
         audioSource.volume = Random.Range(volumeRange.x, volumeRange.y);
-        
-        // Play the clip
         audioSource.PlayOneShot(clip);
     }
 }

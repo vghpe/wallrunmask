@@ -23,9 +23,12 @@ public class PlayerCinematicWallRun : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         firstPersonController.WallRun = false;
+        firstPersonController.WallSide = 0;
     }
     IEnumerator TakeControl()
     {
+        Vector3 toWall = transform.position - firstPersonController.transform.position;
+        firstPersonController.WallSide = Vector3.Dot(toWall, firstPersonController.transform.right) > 0 ? 1 : -1;
         while (firstPersonController.WallRun)
         {
             Vector3 wallRunMove = transform.forward * firstPersonController.WallRunningSpeed * Time.deltaTime;
@@ -36,7 +39,6 @@ public class PlayerCinematicWallRun : MonoBehaviour
             {
                 Vector3 jumpDir = (transform.forward + Vector3.up * 0.6f).normalized;
                 StartCoroutine(WallJump(jumpDir, firstPersonController.WallJumpForce, firstPersonController.WallJumpDuration));
-
             }
             yield return null;
         }

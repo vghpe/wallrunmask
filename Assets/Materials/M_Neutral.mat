@@ -97,14 +97,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _Emissivity: 1
+    - _Emissivity: 3
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Gradient_Intensity: 1
     - _Gradient_Min: 0.2
-    - _Gradient_Power: 1.25
+    - _Gradient_Power: 4
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
